@@ -1,0 +1,111 @@
+*{
+  box-sizing:             border-box;
+  margin:                 0;
+  padding:                0;
+}
+
+.content {
+  width:                  100%;
+  display:                block;
+  height:                 100vh;
+  background-color:       $C-main;
+  text-align:             center;
+  padding-top:            remify(200px);
+  box-sizing:             border-box;
+  overflow:               hidden;
+
+  &-title, 
+  &-text, 
+  .btn-generator {
+    font-family:          $font-family;
+    font-weight:          500;
+    text-align:           center;
+  }
+
+  &-title {
+    font-size:            remify(32px);
+    color:                $C-white;
+    font-weight:          700;
+    text-transform:       uppercase;
+    letter-spacing:       2px;
+    transition:           font-size .3s ease-in;
+
+    &.enlarge {
+      font-size:          remify(60px);
+    }
+  }
+
+  &-text {
+    font-size:            remify(14px);
+    color:                $C-white;
+    font-weight:          300;
+    margin-top:           20px;
+
+  }
+
+  .btn-generator {
+    display:              inline-block;
+    border-radius:        remify(5px);
+    background-color:     $C-pink-cta;
+    padding:              $Padding;
+    font-size:            remify(14px);
+    text-transform:       uppercase;
+    letter-spacing:       1px;
+    color:                $C-white;
+    margin-top:           remify(20px);
+    transition:           background-color .3s;
+    cursor:               pointer;
+
+    &:hover {
+      background-color:   $C-pink-cta-hover;
+    }
+  }
+
+  .wheel {
+    width:                remify(1200px);
+    height:               remify(1200px);
+    display:              block;
+    background-color:     transparent;
+    border:               4px solid $C-mainLight;
+    border-radius:        100%;
+    margin:               0 auto;
+    margin-top:           150px;
+    position:             relative;
+    top:                  0;
+    transition:           all 3s ease-out;
+
+    &-circle {
+      width:              100px;
+      height:             100px;
+      position:           absolute;
+      top:                50%;
+      left:               50%;
+      background-color:   $C-mainLight;
+      border-radius:      100%;
+      transition:         all .3s;
+
+      text-align:         center;
+      padding-top:        40px;
+      font-size:          remify(20px);
+      color:              $C-white;
+      font-weight:        bold;
+      text-decoration:    none;
+      font-family:        $font-family;
+
+      &.active {
+        background-color: $C-blue-cta;
+      }
+    }
+  }
+}
+
+// $class-wheel: circle !default;
+
+// $players: 7;
+// $rotation-players: 360deg / 7;
+
+// @for $i from 1 through $players{
+//   .#{$class-wheel}-#{$i}{
+//     transform:  rotate($rotation-players * $i) translate(600px) rotate($rotation-players * -$i); 
+//   }
+// }

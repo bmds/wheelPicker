@@ -1,0 +1,49 @@
+
+//==========================//
+//  @2: Remify                //
+//==========================//
+
+
+@function remify($px) {
+	$baseline-rem: 16px / 1rem;
+
+	@if $px == 0 {
+		@return 0;
+	}
+
+	@if type-of(px) == "number" {
+		@return $px / $baseline-rem;
+	} 
+	@else {
+		$rems: ();
+
+		@each $value in $px {
+
+			@if $value == 0 {
+				$rems: append($rems, $value);
+			} 
+			@else {
+				$rems: append($rems, ($value / $baseline-rem));
+			}
+		}
+
+		@return $rems;
+	}
+}
+
+// @A.1: Clearfix
+// -------------------------
+@mixin clearfix {
+  *zoom: 1;
+  &:before,
+  &:after {
+    display: table;
+    content: "";
+    // Fixes Opera/contenteditable bug:
+    // http://nicolasgallagher.com/micro-clearfix-hack/#comment-36952
+    line-height: 0;
+  }
+  &:after {
+    clear: both;
+  }
+}
