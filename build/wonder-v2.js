@@ -39,7 +39,7 @@
 								playerNumber: 1
 						},
 						{
-								playerName: 'Tristam Ashley',
+								playerName: 'Tristan Ashley',
 								playerInitials: 'TA',
 								playerNumber: 2
 						},
