@@ -14,6 +14,8 @@ var concat = require('gulp-concat');
 
 var watch = require('gulp-watch');
 
+var surge = require('gulp-surge')
+
 var sassConfig = {
   errLogToConsole: true,
   includePaths:    [config.source + config.src.styles + '/*.scss'],
@@ -60,8 +62,16 @@ gulp.task('copy:html', function(){
 
 gulp.task('copy:build', function(){
   return gulp.src(config.client + '/**/*')
-  .pipe(gulp.dest(config.build + '/'))
+  .pipe(gulp.dest(config.build + '/_client'))
 });
+
+
+gulp.task('surge', function () {
+  return surge({
+    project: './build',
+    domain: 'wonder-wheel.surge.sh'
+  })
+})
 
 gulp.task('default', function() {
   runSeq(['css' , 'scripts' , 'copy:fonts' , 'watch' ]);
@@ -69,4 +79,8 @@ gulp.task('default', function() {
 
 gulp.task('build', function() {
   runSeq(['css' , 'scripts' , 'copy:fonts'], ['copy:build', 'copy:html']);
+});
+
+gulp.task('deploy', function() {
+  runSeq(['build'],['surge']);
 });

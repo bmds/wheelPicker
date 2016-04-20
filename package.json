@@ -11,6 +11,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-postcss": "^6.1.0",
     "gulp-sass": "^2.2.0",
+    "gulp-surge": "^0.1.0",
     "gulp-watch": "^4.3.5",
     "run-sequence": "^1.1.5"
   },

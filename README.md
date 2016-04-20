@@ -1,7 +1,6 @@
 # wheelPicker
 This is what we use in our Frontend meetups. It will choose the next person to do a talk in the next meeting.
 
-
 ## Installation
 
 - Run `npm install`
@@ -12,6 +11,7 @@ This is what we use in our Frontend meetups. It will choose the next person to d
 
  - `gulp` - default task
  - `gulp build` - adds all the files into the build folder
+ - `gulp deploy` - adds everything into build and then pushes to surge
 
 ### Sub Tasks
 
@@ -32,3 +32,8 @@ This is what we use in our Frontend meetups. It will choose the next person to d
 
 - Sass Refactor
 - Use Roboto from Google library instead of downloading multiple assets
+
+
+## Notes
+
+To be able to push to surge you need to be invited by someone who already has access to the project.
