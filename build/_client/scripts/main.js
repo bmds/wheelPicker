@@ -60,19 +60,14 @@
 								playerNumber: 5
 						},
 						{
-								playerName: 'Tom Newton',
-								playerInitials: 'TN',
+								playerName: 'James Tudsbury',
+								playerInitials: 'JT',
 								playerNumber: 6
-						},
-						{
-								playerName: 'Charles Burdett',
-								playerInitials: 'CB',
-								playerNumber: 7
 						},
 						{
 								playerName: 'Darren Hall',
 								playerInitials: 'DH',
-								playerNumber: 8
+								playerNumber: 7
 						}
 				];
 
