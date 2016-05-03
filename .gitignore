@@ -1,3 +1,5 @@
 .sass-cache/
 node_modules/
+_client/
+build/
 styles/style.css.map
