@@ -3,17 +3,25 @@
 var gulp = require('gulp');
 var runSeq = require('run-sequence');
 
+// Configuration
 var config = require('./_config/project');
 
+// Style tasks
+var postCSS         = require('gulp-postcss');
+var autoprefixer    = require('autoprefixer');
+var cssNano         = require('cssnano');
+var minifySelectors = require('postcss-minify-selectors');
+var sass            = require('gulp-sass');
 
-var postCSS = require('gulp-postcss');
-var autoprefixer = require('autoprefixer');
-var sass = require('gulp-sass');
+// Script tasks
+var uglify   = require('gulp-uglify');
 
-var concat = require('gulp-concat');
+// Utility tasks
+var concat     = require('gulp-concat');
+var sourcemaps = require('gulp-sourcemaps');
+var watch      = require('gulp-watch');
 
-var watch = require('gulp-watch');
-
+// Deployment tasks
 var surge = require('gulp-surge')
 
 var sassConfig = {
@@ -34,14 +42,19 @@ gulp.task('watch', ['watch:css', 'watch:js']);
 
 gulp.task('scripts', function() {
   return gulp.src(config.source + config.src.scripts + '/*.js')
+    .pipe(sourcemaps.init())
     .pipe(concat('main.js'))
+    .pipe(uglify())
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(config.client + config.dest.scripts + '/'));
 });
 
 gulp.task('css', function() {
 
   var plugins = [
-    autoprefixer({browsers: ['last 1 version']})
+    autoprefixer({browsers: ['last 1 version']}),
+    minifySelectors(),
+    cssNano()
   ];
 
   return gulp.src(config.source + config.src.styles + '/main.scss')

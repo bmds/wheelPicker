@@ -17,6 +17,10 @@
   },
   "dependencies": {
     "asynquence": "^0.9.0",
-    "node-static": "^0.7.7"
+    "cssnano": "^3.5.2",
+    "gulp-sourcemaps": "^2.0.0-alpha",
+    "gulp-uglify": "^1.5.3",
+    "node-static": "^0.7.7",
+    "postcss-minify-selectors": "^2.0.4"
   }
 }
