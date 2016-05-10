@@ -1,5 +1,41 @@
 window.code = window.code || {};  
 
+window.code.Utilities = window.code.Utilities || {};
+
+window.code.Utilities = (function(){
+  'use strict';
+  var api = {};
+
+  api.addEventListener = function(eventName, eventHandler) {
+    el.addEventListener(eventName, eventHandler);
+  };
+
+  api.append = function(parent, el) {
+    parent.appendChild(el);
+  };
+
+  api.addClass = function(el, className) {
+    el.classList.add(className);
+  };
+
+  api.removeClass = function() {
+    el.classList.remove(className);
+  };
+
+  api.clone = function(el) {
+    el.cloneNode(true);
+  };
+
+  api.setVendorPrefixes = function(element, property, value) {
+		element.style['webkit' + property] = value;
+		element.style['Moz' + property] = value;
+		element.style['ms' + property] = value;
+		element.style['O' + property] = value;
+	};
+
+  return api;
+})();
+
 window.code.players = window.code.players || {};
 
 window.code.players = (function(){
@@ -62,7 +98,7 @@ window.code.players = (function(){
 **************************************************************/
 window.code.wheelSpinner = window.code.wheelSpinner || {};
 
-window.code.wheelSpinner = (function($, players) {
+window.code.wheelSpinner = (function($, Utilities, players) {
 	// Elements
 
 	var wonder_wheel    = $('[data-wheel]');
@@ -154,7 +190,8 @@ window.code.wheelSpinner = (function($, players) {
 	}
 
 	function setProperties($newCircle, rp, wheelWidth){
-		 $newCircle.css({'transform': 'rotate('+rp+'deg) translateY('+wheelWidth+'px) rotate(180deg)',
+		 $newCircle.css({
+			 		'transform': 'rotate('+rp+'deg) translateY('+wheelWidth+'px) rotate(180deg)',
 					'margin': getWidth($firstCircle) / 2 *-1
 			});
 	}
@@ -182,10 +219,6 @@ window.code.wheelSpinner = (function($, players) {
 	}
 
 	function init(){
-			localStorage.setItem('previous-winners', null);
-
-			stores();
-
 			$firstCircle = circleSetup();
 
 			wonder_button.on('click', callsForAWinner);
@@ -195,4 +228,4 @@ window.code.wheelSpinner = (function($, players) {
 
 	init();
 
-})(jQuery, window.code.players);
+})(jQuery, window.code.Utilities, window.code.players);

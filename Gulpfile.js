@@ -35,6 +35,7 @@ gulp.task('watch', ['watch:css', 'watch:js']);
 gulp.task('scripts', function() {
   return gulp.src([
     config.source + config.src.scripts + '/namespace.js',
+    config.source + config.src.scripts + '/Utilities.js',
     config.source + config.src.scripts + '/players.js',
     config.source + config.src.scripts + '/wheel.js'
   ])

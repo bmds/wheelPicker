@@ -9,7 +9,7 @@
 **************************************************************/
 window.code.wheelSpinner = window.code.wheelSpinner || {};
 
-window.code.wheelSpinner = (function($, players) {
+window.code.wheelSpinner = (function($, Utilities, players) {
 	// Elements
 
 	var wonder_wheel    = $('[data-wheel]');
@@ -101,7 +101,8 @@ window.code.wheelSpinner = (function($, players) {
 	}
 
 	function setProperties($newCircle, rp, wheelWidth){
-		 $newCircle.css({'transform': 'rotate('+rp+'deg) translateY('+wheelWidth+'px) rotate(180deg)',
+		 $newCircle.css({
+			 		'transform': 'rotate('+rp+'deg) translateY('+wheelWidth+'px) rotate(180deg)',
 					'margin': getWidth($firstCircle) / 2 *-1
 			});
 	}
@@ -129,10 +130,6 @@ window.code.wheelSpinner = (function($, players) {
 	}
 
 	function init(){
-			localStorage.setItem('previous-winners', null);
-
-			stores();
-
 			$firstCircle = circleSetup();
 
 			wonder_button.on('click', callsForAWinner);
@@ -142,4 +139,4 @@ window.code.wheelSpinner = (function($, players) {
 
 	init();
 
-})(jQuery, window.code.players);
+})(jQuery, window.code.Utilities, window.code.players);
