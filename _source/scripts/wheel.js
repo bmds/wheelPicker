@@ -1,222 +1,145 @@
-(function ($) {
-		"use strict";
+/**************************************************************
 
-		/**************************************************************
+				Script          : Wheel Spinner
+				Authors         : Matthew Claffey
+				Version         : 2.0.0
+				Version Notes:
 
-						Script          : Wheel Spinner
-						Authors         : Matthew Claffey
-						Version         : 2.0.0
-						Version Notes:
 
+**************************************************************/
+window.code.wheelSpinner = window.code.wheelSpinner || {};
 
-		**************************************************************/
+window.code.wheelSpinner = (function($, players) {
+	// Elements
 
+	var wonder_wheel    = $('[data-wheel]');
+	var wonder_button   = $('[data-button]');
+	var wonder_title    = $('[data-title]');
 
-		if(!window.code) window.code = {};
-		if(!window.code.components) window.code.components = {};
+	var players = players.keys;
 
 
-		var wheelSpinner = window.code.components.wheelSpinner = function (container, options) {
-				// Elements
+	// Other
 
-				var wonder_wheel    = $('[data-wheel]');
-				var wonder_button   = $('[data-button]');
-				var wonder_title    = $('[data-title]');
+	var anglesArr           = [];
+	var rotationPosition    = (360 / players.length);
+	var wheelWidth          = wonder_wheel.outerWidth() / 2;
+	var $firstCircle;
 
+	var pastWinners = [];
 
+	// Call for a winner
 
+	function callsForAWinner() {
+			var chosenNumber = Math.floor(Math.random() * players.length);
 
-				// Players
+			if(pastWinners.length > 2) {
+					pastWinners = [];
+			}
 
+			// If player does not exist
+			if($.inArray(chosenNumber, pastWinners) === -1) {
 
-				var players = [
-						{
-								playerName: 'Matthew Claffey',
-								playerInitials: 'MC',
-								playerNumber: 0
-						},
-						{
-								playerName: 'Andrew Brandwood',
-								playerInitials: 'AB',
-								playerNumber: 1
-						},
-						{
-								playerName: 'Tristan Ashley',
-								playerInitials: 'TA',
-								playerNumber: 2
-						},
-						{
-								playerName: 'Daniel Furze',
-								playerInitials: 'DF',
-								playerNumber: 3
-						},
-						{
-								playerName: 'Barney Scott',
-								playerInitials: 'BS',
-								playerNumber: 4
-						},
-						{
-								playerName: 'Matthew Macartney',
-								playerInitials: 'MM',
-								playerNumber: 5
-						},
-						{
-								playerName: 'James Tudsbury',
-								playerInitials: 'JT',
-								playerNumber: 6
-						},
-						{
-								playerName: 'Darren Hall',
-								playerInitials: 'DH',
-								playerNumber: 7
-						}
-				];
+					pastWinners.push(chosenNumber);
 
+					setEvents(chosenNumber);
 
-				// Other
+			} else {
+					wonder_title.text(players[chosenNumber].playerName + ' has already beem selected.');
+			}
+	}
 
-				var anglesArr           = [];
-				var rotationPosition    = (360 / players.length);
-				var wheelWidth          = wonder_wheel.outerWidth() / 2;
-				var $firstCircle;
+	function tensionBuilder(){
+			 wonder_wheel.css({
+					'transform': 'rotate(1420deg)'
+			});
+	}
 
-				// Local Storage
+	function setEvents(chosenNumber){
+			var wheelSpin = 180 - anglesArr[chosenNumber];
+			var wonder_circle   = $('[data-circle]');
 
-				function stores() {
-						var local = localStorage.getItem('previous-winners').split(',');
 
-						local.map(function(number){
-								number = parseInt(number);
+			wonder_title.text('Lets Go!');
 
-								if(!isNaN(number)){
-										pastWinners.push(number);
-								}
-						});
+			tensionBuilder();
 
-				};
+			wonder_circle.removeClass('active');
 
-				var pastWinners = [];
 
-				// Call for a winner
+			setTimeout(function(){
+					wonder_wheel.css({
+							'transform': 'rotate('+ wheelSpin +'deg)'
+					});
+			}, 3000);
 
-				function callsForAWinner() {
-						var chosenNumber = Math.floor(Math.random() * players.length);
+			setTimeout(function(){
+					wonder_circle.eq(chosenNumber + 1).addClass('active');
+					wonder_title.text(players[chosenNumber].playerName + ' has been selected.');
+			}, 6000);
+	}
 
-						if(pastWinners.length > 2) {
-								pastWinners = [];
-						}
+	function getWidth(elem){
+			return $(elem).width();
+	}
 
-						// If player does not exist
-						if($.inArray(chosenNumber, pastWinners) === -1) {
+	function createCircle(){
+			return $('<div />', {
+					'class': 'wheel-circle',
+					'html': '<a class="user"></a>',
+					'data-circle': ''
+			});
+	}
 
-								pastWinners.push(chosenNumber);
+	function circleSetup(){
+			//Jquery object
+			var $circle = createCircle();
 
-								localStorage.setItem('previous-winners', pastWinners);
+			wonder_wheel.append($circle);
 
-								setEvents(chosenNumber);
+			return $circle;
+	}
 
-						} else {
-								wonder_title.text(players[chosenNumber].playerName + ' has already beem selected.');
-						}
-				};
+	function setProperties($newCircle, rp, wheelWidth){
+		 $newCircle.css({'transform': 'rotate('+rp+'deg) translateY('+wheelWidth+'px) rotate(180deg)',
+					'margin': getWidth($firstCircle) / 2 *-1
+			});
+	}
 
-				function tensionBuilder(){
-						 wonder_wheel.css({
-								'transform': 'rotate(1420deg)'
-						});
-				};
+	function outputPlayers(player) {
+			var i = player.playerNumber + 1;
 
-				function setEvents(chosenNumber){
-						var wheelSpin = 180 - anglesArr[chosenNumber];
-						var wonder_circle   = $('[data-circle]');
+			var $newCircle = $firstCircle;
 
+			var rp = (rotationPosition * i);
 
-						wonder_title.text('Lets Go!');
+			//capture the angles
 
-						tensionBuilder();
+			anglesArr.push(rp);
 
-						wonder_circle.removeClass('active');
+			if(i > 0){
+					$newCircle = $firstCircle.clone();
+			}
 
+			setProperties($newCircle, rp, wheelWidth);
 
-						setTimeout(function(){
-								wonder_wheel.css({
-										'transform': 'rotate('+ wheelSpin +'deg)'
-								});
-						}, 3000);
+			$newCircle.text(player.playerInitials);
 
-						setTimeout(function(){
-								wonder_circle.eq(chosenNumber + 1).addClass('active');
-								wonder_title.text(players[chosenNumber].playerName + ' has been selected.');
-						}, 6000);
-				};
+			wonder_wheel.append($newCircle);
+	}
 
-				function getWidth(elem){
-						return $(elem).width();
-				}
+	function init(){
+			localStorage.setItem('previous-winners', null);
 
-				function createCircle(){
-						return $('<div />', {
-								'class': 'wheel-circle',
-								'html': '<a class="user"></a>',
-								'data-circle': ''
-						});
-				};
+			stores();
 
-				function circleSetup(){
-						//Jquery object
-						var $circle = createCircle();
+			$firstCircle = circleSetup();
 
-						wonder_wheel.append($circle);
+			wonder_button.on('click', callsForAWinner);
+			players.map(outputPlayers);
 
-						return $circle;
-				};
+	}
 
-				function setProperties($newCircle, rp, wheelWidth){
-					 $newCircle.css({'transform': 'rotate('+rp+'deg) translateY('+wheelWidth+'px) rotate(180deg)',
-								'margin': getWidth($firstCircle) / 2 *-1
-						});
-				};
+	init();
 
-				function outputPlayers(player) {
-						var i = player.playerNumber + 1;
-
-						var $newCircle = $firstCircle;
-
-						var rp = (rotationPosition * i);
-
-						//capture the angles
-
-						anglesArr.push(rp);
-
-						if(i > 0){
-								$newCircle = $firstCircle.clone();
-						}
-
-						setProperties($newCircle, rp, wheelWidth);
-
-						$newCircle.text(player.playerInitials);
-
-						wonder_wheel.append($newCircle);
-				};
-
-				function init(){
-						localStorage.setItem('previous-winners', null);
-
-						stores();
-
-						$firstCircle = circleSetup();
-
-						wonder_button.on('click', callsForAWinner);
-						players.map(outputPlayers);
-
-				};
-
-				init();
-		};
-
-
-		$(function () {
-				var wonderWheel = new code.components.wheelSpinner();
-		});
-
-}(jQuery));
+})(jQuery, window.code.players);

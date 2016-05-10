@@ -33,7 +33,11 @@ gulp.task('watch:js', function() {
 gulp.task('watch', ['watch:css', 'watch:js']);
 
 gulp.task('scripts', function() {
-  return gulp.src(config.source + config.src.scripts + '/*.js')
+  return gulp.src([
+    config.source + config.src.scripts + '/namespace.js',
+    config.source + config.src.scripts + '/players.js',
+    config.source + config.src.scripts + '/wheel.js'
+  ])
     .pipe(concat('main.js'))
     .pipe(gulp.dest(config.client + config.dest.scripts + '/'));
 });
@@ -47,22 +51,22 @@ gulp.task('css', function() {
   return gulp.src(config.source + config.src.styles + '/main.scss')
     .pipe(sass(sassConfig))
     .pipe(postCSS(plugins))
-    .pipe(gulp.dest(config.client + config.dest.styles + '/'))
+    .pipe(gulp.dest(config.client + config.dest.styles + '/'));
 });
 
 gulp.task('copy:fonts', function(){
   return gulp.src(config.source + config.src.fonts + '/**/*')
-  .pipe(gulp.dest(config.client + config.dest.fonts + '/'))
+  .pipe(gulp.dest(config.client + config.dest.fonts + '/'));
 });
 
 gulp.task('copy:html', function(){
   return gulp.src('./*.html')
-  .pipe(gulp.dest(config.build))
+  .pipe(gulp.dest(config.build));
 });
 
 gulp.task('copy:build', function(){
   return gulp.src(config.client + '/**/*')
-  .pipe(gulp.dest(config.build + '/_client'))
+  .pipe(gulp.dest(config.build + '/_client'));
 });
 
 
@@ -70,7 +74,7 @@ gulp.task('surge', function () {
   return surge({
     project: './build',
     domain: 'wonder-wheel.surge.sh'
-  })
+  });
 })
 
 gulp.task('default', function() {

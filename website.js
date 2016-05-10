@@ -1,13 +1,14 @@
-var host = 'localhost';
-var port = 8006;
-var http = require('http');
-var httpServer = http.createServer(handleHTTP).listen(port, host);
-var ASQ = require('asynquence');
-var node_static = require('node-static');
-var static_files = new node_static.Server(__dirname);
+var express = require('express');
+var app = express();
+var path = require('path');
 
-function handleHTTP(request, response) {
-  request.addListener('end', function () {
-    static_files.serve(request, response);
-  }).resume();
-}
+app.use(express.static(path.join(__dirname, '_client')));
+
+// respond with "hello world" when a GET request is made to the homepage
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname + '/index.html'));
+});
+
+app.listen(3000, function () {
+  console.log('Example app listening on port 3000!');
+});
