@@ -6,7 +6,7 @@ window.code.Utilities = (function(){
   'use strict';
   var api = {};
 
-  api.addEventListener = function(eventName, eventHandler) {
+  api.addEventListener = function(el, eventName, eventHandler) {
     el.addEventListener(eventName, eventHandler);
   };
 
@@ -14,16 +14,20 @@ window.code.Utilities = (function(){
     parent.appendChild(el);
   };
 
+  api.text = function (el, string){
+    el.textContent = string;
+  };
+
   api.addClass = function(el, className) {
     el.classList.add(className);
   };
 
-  api.removeClass = function() {
+  api.removeClass = function(el, className) {
     el.classList.remove(className);
   };
 
   api.clone = function(el) {
-    el.cloneNode(true);
+    return el.cloneNode(true);
   };
 
   api.setVendorPrefixes = function(element, property, value) {
@@ -32,6 +36,17 @@ window.code.Utilities = (function(){
 		element.style['ms' + property] = value;
 		element.style['O' + property] = value;
 	};
+
+  api.circleTransform = function(element, rotationArg, wheelWidth) {
+    var transfromString = ('rotate(' + rotationArg + 'deg) translate(0, ' + wheelWidth + 'px) rotate(180deg)');
+
+   // now attach that variable to each prefixed style
+   element.style.webkitTransform = transfromString;
+   element.style.MozTransform = transfromString;
+   element.style.msTransform = transfromString;
+   element.style.OTransform = transfromString;
+   element.style.transform = transfromString;
+  };
 
   return api;
 })();
@@ -91,19 +106,19 @@ window.code.players = (function(){
 
 				Script          : Wheel Spinner
 				Authors         : Matthew Claffey
-				Version         : 2.0.0
+				Version         : 3.0.0
 				Version Notes:
 
 
 **************************************************************/
 window.code.wheelSpinner = window.code.wheelSpinner || {};
 
-window.code.wheelSpinner = (function($, Utilities, players) {
+window.code.wheelSpinner = (function(Utilities, players) {
 	// Elements
 
-	var wonder_wheel    = $('[data-wheel]');
-	var wonder_button   = $('[data-button]');
-	var wonder_title    = $('[data-title]');
+	var wonder_wheel    = document.querySelectorAll('[data-wheel]')[0];
+	var wonder_button   = document.querySelectorAll('[data-button]')[0];
+	var wonder_title    = document.querySelectorAll('[data-title]');
 
 	var players = players.keys;
 
@@ -112,88 +127,67 @@ window.code.wheelSpinner = (function($, Utilities, players) {
 
 	var anglesArr           = [];
 	var rotationPosition    = (360 / players.length);
-	var wheelWidth          = wonder_wheel.outerWidth() / 2;
+	var wheelWidth          = wonder_wheel.offsetWidth / 2;
 	var $firstCircle;
-
-	var pastWinners = [];
 
 	// Call for a winner
 
 	function callsForAWinner() {
 			var chosenNumber = Math.floor(Math.random() * players.length);
-
-			if(pastWinners.length > 2) {
-					pastWinners = [];
-			}
-
-			// If player does not exist
-			if($.inArray(chosenNumber, pastWinners) === -1) {
-
-					pastWinners.push(chosenNumber);
-
-					setEvents(chosenNumber);
-
-			} else {
-					wonder_title.text(players[chosenNumber].playerName + ' has already beem selected.');
-			}
+			setEvents(chosenNumber);
 	}
 
 	function tensionBuilder(){
-			 wonder_wheel.css({
-					'transform': 'rotate(1420deg)'
-			});
+			Utilities.setVendorPrefixes(wonder_wheel, 'Transform', 'rotate(1420deg)');
 	}
 
 	function setEvents(chosenNumber){
 			var wheelSpin = 180 - anglesArr[chosenNumber];
-			var wonder_circle   = $('[data-circle]');
+			var wonder_circle   = document.querySelectorAll('[data-circle]');
 
-
-			wonder_title.text('Lets Go!');
+			Utilities.text(wonder_title[0], 'Lets Go!');
 
 			tensionBuilder();
 
-			wonder_circle.removeClass('active');
-
+			for(var i =0; i < wonder_circle.length; i++) {
+				Utilities.removeClass(wonder_circle[i], 'active');
+			}
 
 			setTimeout(function(){
-					wonder_wheel.css({
-							'transform': 'rotate('+ wheelSpin +'deg)'
-					});
+					Utilities.setVendorPrefixes(wonder_wheel, 'Transform', 'rotate('+ wheelSpin +'deg)');
 			}, 3000);
 
 			setTimeout(function(){
-					wonder_circle.eq(chosenNumber + 1).addClass('active');
-					wonder_title.text(players[chosenNumber].playerName + ' has been selected.');
+					Utilities.addClass(wonder_circle[chosenNumber + 1], 'active');
+					Utilities.text(wonder_title[0], players[chosenNumber].playerName + ' has been selected.');
 			}, 6000);
 	}
 
 	function getWidth(elem){
-			return $(elem).width();
+			return elem.offsetWidth;
 	}
 
-	function createCircle(){
-			return $('<div />', {
-					'class': 'wheel-circle',
-					'html': '<a class="user"></a>',
-					'data-circle': ''
-			});
+	function createCircle() {
+		var circle = document.createElement('div');
+		Utilities.addClass(circle, 'wheel-circle');
+		circle.setAttribute('data-circle', '');
+
+		return circle;
 	}
 
 	function circleSetup(){
 			//Jquery object
 			var $circle = createCircle();
 
-			wonder_wheel.append($circle);
+			Utilities.append(wonder_wheel, $circle);
 
 			return $circle;
 	}
 
-	function setProperties($newCircle, rp, wheelWidth){
-		 $newCircle.css({
-			 		'transform': 'rotate('+rp+'deg) translateY('+wheelWidth+'px) rotate(180deg)',
-					'margin': getWidth($firstCircle) / 2 *-1
-			});
+	function setProperties($newCircle, rp, wheelWidth) {
+			var margin = getWidth($firstCircle) / 2 * -1;
+			Utilities.circleTransform($newCircle, rp, wheelWidth);
+			$newCircle.style.margin = margin + 'px';
 	}
 
 	function outputPlayers(player) {
@@ -208,24 +202,25 @@ window.code.wheelSpinner = (function($, Utilities, players) {
 			anglesArr.push(rp);
 
 			if(i > 0){
-					$newCircle = $firstCircle.clone();
+					$newCircle = Utilities.clone($firstCircle);
 			}
 
 			setProperties($newCircle, rp, wheelWidth);
 
-			$newCircle.text(player.playerInitials);
+			Utilities.text($newCircle, player.playerInitials);
 
-			wonder_wheel.append($newCircle);
+			Utilities.append(wonder_wheel, $newCircle);
 	}
 
 	function init(){
 			$firstCircle = circleSetup();
 
-			wonder_button.on('click', callsForAWinner);
+			Utilities.addEventListener(wonder_button, 'click', callsForAWinner)
+
 			players.map(outputPlayers);
 
 	}
 
 	init();
 
-})(jQuery, window.code.Utilities, window.code.players);
+})(window.code.Utilities, window.code.players);
