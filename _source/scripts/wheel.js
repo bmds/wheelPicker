@@ -105,6 +105,8 @@ window.code.wheelSpinner = (function(Utilities, players) {
 
 			Utilities.text($newCircle, player.playerInitials);
 
+			$newCircle.style.backgroundImage = 'url("' + player.playerAvatar + '")';
+
 			Utilities.append(wonder_wheel, $newCircle);
 	}
 
