@@ -67,7 +67,7 @@ gulp.task('copy:html', function(){
 
 gulp.task('copy:build', function(){
   return gulp.src(config.client + '/**/*')
-  .pipe(gulp.dest(config.build + '/_client'));
+  .pipe(gulp.dest(config.build));
 });
 
 
