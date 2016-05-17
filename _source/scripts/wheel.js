@@ -18,13 +18,14 @@
 
 		var wheelSpinner = window.code.components.wheelSpinner = function (container, options) {
 				// Elements
+				var $elements = {
+					wheel:  document.querySelectorAll('[data-wheel]')[0],
+					button: document.querySelectorAll('[data-button]')[0],
+					title:  document.querySelectorAll('[data-title]')[0]
+				};
 
 				var wonder_wheel    = $('[data-wheel]');
 				var wonder_button   = $('[data-button]');
-				var wonder_title    = $('[data-title]');
-
-
-
 
 				// Players
 
@@ -77,7 +78,7 @@
 
 				var anglesArr           = [];
 				var rotationPosition    = (360 / players.length);
-				var wheelWidth          = wonder_wheel.outerWidth() / 2;
+				var wheelWidth          = $elements.wheel.offsetWidth / 2;
 				var $firstCircle;
 
 				// Local Storage
@@ -107,7 +108,7 @@
 						}
 
 						// If player does not exist
-						if($.inArray(chosenNumber, pastWinners) === -1) {
+						if(pastWinners.indexOf(chosenNumber) === -1) {
 
 								pastWinners.push(chosenNumber);
 
@@ -116,7 +117,7 @@
 								setEvents(chosenNumber);
 
 						} else {
-								wonder_title.text(players[chosenNumber].playerName + ' has already beem selected.');
+								$elements.title.textContent = players[chosenNumber].playerName + ' has already beem selected.';
 						}
 				};
 
@@ -131,7 +132,7 @@
 						var wonder_circle   = $('[data-circle]');
 
 
-						wonder_title.text('Lets Go!');
+						$elements.title.textContent = 'Lets Go!';
 
 						tensionBuilder();
 
@@ -146,7 +147,7 @@
 
 						setTimeout(function(){
 								wonder_circle.eq(chosenNumber + 1).addClass('active');
-								wonder_title.text(players[chosenNumber].playerName + ' has been selected.');
+								$elements.title.textContent = players[chosenNumber].playerName + ' has been selected.';
 						}, 6000);
 				};
 
@@ -155,6 +156,8 @@
 				}
 
 				function createCircle(){
+					var circle = document.createElement('div');
+					circle.setAttribute('data-circle', '');
 						return $('<div />', {
 								'class': 'wheel-circle',
 								'html': '<a class="user"></a>',
@@ -194,7 +197,7 @@
 
 						setProperties($newCircle, rp, wheelWidth);
 
-						$newCircle.text(player.playerInitials);
+						$elements.title.textContent = player.playerInitials;
 
 						wonder_wheel.append($newCircle);
 				};
