@@ -11,9 +11,10 @@ require('./_gulpTasks/_task.scripts')(gulp, config);
 require('./_gulpTasks/_task.copy')(gulp, config);
 require('./_gulpTasks/_task.watch')(gulp, config);
 require('./_gulpTasks/_task.surge')(gulp, config);
+require('./_gulpTasks/_task.serve')(gulp, config);
 
 gulp.task('default', function() {
-  runSeq(['css' , 'scripts' , 'copy:fonts' , 'watch' ]);
+  runSeq(['css' , 'scripts' , 'copy:fonts' , 'connect', 'watch' ]);
 });
 
 gulp.task('build', function() {
