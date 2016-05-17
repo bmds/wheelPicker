@@ -29,6 +29,6 @@ module.exports = function(gulp, config) {
       .pipe(sass(sassConfig))
       .pipe(postCSS(plugins))
       .pipe(sourcemaps.write('.'))
-      .pipe(gulp.dest(config.client + config.dest.styles + '/'));
+      .pipe(gulp.dest(config.public + config.dest.styles + '/'));
   });
 };

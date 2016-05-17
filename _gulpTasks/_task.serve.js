@@ -6,7 +6,7 @@ module.exports = function(gulp, config) {
 
    gulp.task('connect', function() {
       connect.server({
-         root: ['./', config.client],
+         root: [config.public],
          livereload: true
       });
    });

@@ -13,14 +13,10 @@ require('./_gulpTasks/_task.watch')(gulp, config);
 require('./_gulpTasks/_task.surge')(gulp, config);
 require('./_gulpTasks/_task.serve')(gulp, config);
 
-gulp.task('default', function() {
-  runSeq(['css' , 'scripts' , 'copy:fonts' , 'connect', 'watch' ]);
-});
+gulp.task('build', ['css' , 'scripts' , 'copy:fonts', 'copy:html']);
 
-gulp.task('build', function() {
-  runSeq(['css' , 'scripts' , 'copy:fonts'], ['copy:build', 'copy:html']);
-});
+gulp.task('default', ['build' , 'connect', 'watch' ]);
 
 gulp.task('deploy', function() {
-  runSeq(['build'],['surge']);
+  runSeq(['build'], ['surge']);
 });

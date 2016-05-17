@@ -2,8 +2,7 @@ module.exports = function() {
 
   return {
     source: './_source',
-    client: './_client',
-    build: './build',
+    public: './public',
     src: {
       styles: '/sass',
       scripts: '/scripts',

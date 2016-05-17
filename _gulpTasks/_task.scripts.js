@@ -17,6 +17,6 @@ module.exports = function(gulp, config) {
       .pipe(concat('main.js'))
       .pipe(uglify())
       .pipe(sourcemaps.write('.'))
-      .pipe(gulp.dest(config.client + config.dest.scripts + '/'));
+      .pipe(gulp.dest(config.public + config.dest.scripts + '/'));
   });
 };

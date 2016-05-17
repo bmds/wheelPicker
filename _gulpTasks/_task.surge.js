@@ -2,11 +2,11 @@
 
 var surge = require('gulp-surge');
 
-module.exports = function(gulp, cofig) {
+module.exports = function(gulp, config) {
 
   gulp.task('surge', function () {
     return surge({
-      project: './build',
+      project: config.public,
       domain: 'wonder-wheel.surge.sh'
     });
   })

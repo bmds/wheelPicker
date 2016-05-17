@@ -12,5 +12,9 @@ module.exports = function(gulp, config) {
     gulp.watch(config.source + config.src.scripts + '/*.js', ['scripts']);
   });
 
-  gulp.task('watch', ['watch:css', 'watch:js']);
+  gulp.task('watch:html', function() {
+    gulp.watch('./*.html', ['copy:html']);
+  });
+
+  gulp.task('watch', ['watch:css', 'watch:js', 'watch:html']);
 };
