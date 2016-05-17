@@ -1,0 +1,1 @@
+window.code = window.code || {};  

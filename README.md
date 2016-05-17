@@ -20,15 +20,20 @@ This is what we use in our Frontend meetups. It will choose the next person to d
 - `gulp copy:fonts` - moves fonts over to client folder
 - `gulp copy:html` - moves the html file over to the build folder
 
-## Version 0.2.0
+## Version 3.0.0
+
+- re-written the code in vanilla JS
+- Replace node-static with Express
+
+## Version 2.1.0
 
 - Converted to use gulp
-- Runs a node server for the static file
+- Runs node server to serve static files
 - Restructure folders to the statndard way
 - created a build task
 - Removed any wasteful files
 
-## Improvements
+## Improvements to do
 
 - Sass Refactor
 - Use Roboto from Google library instead of downloading multiple assets
